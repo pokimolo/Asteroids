@@ -1,53 +1,53 @@
 # import pygame module 
 import pygame 
 import math
+import gamestate
+
+
+width = 800
+height = 600
+z = [width,height] 
+transparent = (0, 0, 0, 0)
+white = (255, 255, 255)
+black = (0, 0, 0)
+
+# Set screen 
+screen_display = pygame.display 
+screen_display.set_caption('Asteroids') 
+surface = screen_display.set_mode(z) 
+pygame.font.init()
+font = pygame.font.Font('Platinum Sign.ttf', 32)
+font2 = pygame.font.SysFont('Arial', 32)
+
+
+############################# GAME START ####################################
 
 pygame.init() 
+# --- Title Screen Loop ---
+title_screen = True
+while title_screen:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
 
-# width 
-width = 1200
-
-# height 
-height = 800
-
-#store he screen size 
-z = [width,height] 
-
-# store the color 
-white = (255, 255, 255) 
-screen_display = pygame.display 
-
-# Set caption of screen 
-screen_display.set_caption('Asteroids') 
-
-# setting the size of the window 
-surface = screen_display.set_mode(z) 
-
-# set the image which to be displayed on screen 
-ship = pygame.image.load('pictures\spaceship.png').convert()
-P_X = width/2
-P_Y = height/2
-# set window true 
-window = True
-while window: 
-	for event in pygame.event.get(): 
-		if event.type == pygame.QUIT: 
-			window = False
-			
-			# display white on screen other than image 
-	surface.fill(white) 
-
-	mx, my = pygame.mouse.get_pos()
-	ship_rect = ship.get_rect(topleft=(P_X, P_Y))
-	dx, dy = mx - ship_rect.centerx, ship_rect.centery - my
-	angle = math.degrees(math.atan2(-dy, dx)) +180
+        # Press any key or mouse click to start the game
+        if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+            title_screen = False
+    surface.fill(white)
+    text = font.render('ASTEROIDS', True, black)
+    text2 = font2.render('press any key to play', True, black)
 	
-	rot_image = pygame.transform.rotate(ship, angle)
-	rot_image_rect = rot_image.get_rect(center=ship_rect.center)
-	surface.blit(rot_image, rot_image_rect.topleft)
+    textRect = text.get_rect()
+    textRect2 = text2.get_rect()
+    
+    textRect.center = (width / 2, height / 2)
+    textRect2.center = (width / 2, height / 2 + 50)
+    
+    surface.blit(text, textRect)
+    surface.blit(text2, textRect2)
+    pygame.display.update()
 
 
-
-	screen_display.update() 
-
+gamestate.playing(surface)
 pygame.quit() 
