@@ -1,5 +1,8 @@
 #file for recording the top 5 scores with names
-scoreboard = ['1st':0, '2nd':0, '3rd':0, '4th':0, '5th':0]
+scoreboard = dict()
 
-first_name = scoreboard['1st']
-top_score = scoreboard.get('1st')
+scoreboard['1st'] = 0
+scoreboard['2nd'] = 0
+scoreboard['3rd'] = 0
+scoreboard['4th'] = 0
+scoreboard['5th'] = 0
