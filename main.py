@@ -18,6 +18,9 @@ pygame.font.init()
 font = pygame.font.Font('Platinum Sign.ttf', 32)
 font2 = pygame.font.SysFont('Arial', 32)
 
+######################## Choose Difficulty ########################
+
+difficulty = int(input('Enter Difficulty:\n 1 Easy \n 1 Normal \n 3 Hard \n'))
 
 ############################# GAME START ####################################
 
@@ -48,7 +51,7 @@ while title_screen:
     pygame.display.update()
 
 
-gamestate.playing(surface)
+gamestate.playing(surface, difficulty)
 pygame.quit() 
 
 gamestate.print_board()

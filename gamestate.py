@@ -36,8 +36,8 @@ def update_scoreboard(hit_asteroids):
         line_parts = line.split()
         if len(line_parts) < 2:
             continue
-        score = int(line_parts[1])
-        if new_score > score:
+        score = line_parts[1]
+        if new_score > int(score):
             new_line = f"{new_name} {new_score}\n"
             lines.insert(lines.index(line), new_line)
             break
@@ -130,7 +130,7 @@ class Asteroid:
         # Uncomment for debugging
         # pygame.draw.rect(surface, (255, 0, 0), self.rect, 1)
 
-def playing(surface):
+def playing(surface, difficulty):
     pygame.init()
     window = True
     lasers = []
@@ -140,7 +140,15 @@ def playing(surface):
     clock = pygame.time.Clock()
     health = 3
     spawn_timer = 0
-    spawn_interval = 20
+    #default asteroid speed
+    speed = .75
+    if difficulty == 1:
+        spawn_interval = 30
+    elif difficulty == 2:
+        spawn_interval = 20
+        speed = 1.2
+    else:
+        spawn_interval = 10
     
     while window and health > 0:
         # Handle events
@@ -218,18 +226,20 @@ def playing(surface):
             spawn_timer = 0
             rand_choice = random.random()
             if rand_choice < 0.1:
-                asteroids.append(Asteroid(1, .75, random.randint(90, 180)))
+                asteroids.append(Asteroid(1, speed, random.randint(90, 180)))
             elif rand_choice < 0.15:
-                asteroids.append(Asteroid(2, .75, random.randint(90, 180)))
+                asteroids.append(Asteroid(2, speed, random.randint(90, 180)))
             elif rand_choice < 0.18:
-                asteroids.append(Asteroid(3, .75, random.randint(90, 180)))
+                asteroids.append(Asteroid(3, speed, random.randint(90, 180)))
         
         # Update the display
         screen_display.update()
         clock.tick(60)
     
     pygame.quit()
-    print('Score:', hit_asteroids)
     accuracy = hit_asteroids / laser_count if laser_count > 0 else 0
+    
+    print('########### STATS ###########')
+    print('Score:', hit_asteroids)
     print(f'Accuracy: {accuracy:.2%}')
     update_scoreboard(hit_asteroids)
