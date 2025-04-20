@@ -1,8 +1,7 @@
 # import pygame module 
 import pygame 
-import math
 import gamestate
-
+import math
 
 width = 800
 height = 600
@@ -52,3 +51,4 @@ while title_screen:
 gamestate.playing(surface)
 pygame.quit() 
 
+gamestate.print_board()

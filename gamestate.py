@@ -25,6 +25,34 @@ heart = pygame.image.load('pictures/heart.png').convert_alpha()
 bg = pygame.image.load('pictures/Bg.jpg')
 bg = pygame.transform.scale(bg, (width, height))
 
+################################## SCOREBOARD ###################################
+    
+def update_scoreboard(hit_asteroids):
+    with open('scoreboard.txt', 'r') as file:
+        lines = file.readlines()
+    new_score = hit_asteroids
+    new_name = input('Enter name for scoreboard: ')
+    for line in lines:
+        line_parts = line.split()
+        if len(line_parts) < 2:
+            continue
+        score = int(line_parts[1])
+        if new_score > score:
+            new_line = f"{new_name} {new_score}\n"
+            lines.insert(lines.index(line), new_line)
+            break
+    if len(lines) > 5:
+        lines.pop()
+    with open('scoreboard.txt', 'w') as file:
+            file.writelines(lines)
+   
+def print_board():
+    print('##########TOP SCORES##########')
+    with open('scoreboard.txt', 'r') as file:
+        lines = file.readlines()
+    for line in lines:
+        print(line)
+    print('##############################')
 
 class Laser:
     def __init__(self, angle):
@@ -200,6 +228,9 @@ def playing(surface):
         clock.tick(60)  # Limit the frame rate to 60 FPS
 
     pygame.quit()
-    print('asteroids broken:', hit_asteroids)
+    print('Score:', hit_asteroids)
     accuracy = hit_asteroids / laser_count if laser_count > 0 else 0
-    print(f'accuracy: {accuracy:.2%}')
+    print(f'Accuracy: {accuracy:.2%}')
+    update_scoreboard(hit_asteroids)
+
+    
