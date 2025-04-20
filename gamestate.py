@@ -139,21 +139,21 @@ def playing(surface):
     hit_asteroids = 0
     clock = pygame.time.Clock()
     health = 3
-    spawn_timer = 0  # Timer to control spawn frequency
-    spawn_interval = 20  # Set to the number of frames you want between spawns (60 frames = 1 second)
-
+    spawn_timer = 0
+    spawn_interval = 20
+    
     while window and health > 0:
-        # Draw background
-        surface.blit(bg, (0, 0))
-
-        # Check if quit
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 window = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 lasers.append(Laser(angle))
                 laser_count += 1
-
+        
+        # Draw background
+        surface.blit(bg, (0, 0))
+        
         # Display hearts
         if health == 3:
             surface.blit(heart, (P_X-12, P_Y-24))
@@ -164,8 +164,8 @@ def playing(surface):
             surface.blit(heart, (P_X+8, P_Y-24))
         elif health == 1:
             surface.blit(heart, (P_X-12, P_Y-24))
-
-        # Spin spaceship facing mouse x and y
+        
+        # Update ship position and rotation
         mx, my = pygame.mouse.get_pos()
         ship_rect = ship.get_rect(topleft=(P_X, P_Y))
         dx, dy = mx - ship_rect.centerx, ship_rect.centery - my
@@ -173,33 +173,37 @@ def playing(surface):
         rot_image = pygame.transform.rotate(ship, angle)
         rot_image_rect = rot_image.get_rect(center=ship_rect.center)
         surface.blit(rot_image, rot_image_rect.topleft)
-
-        # Update lasers and check collisions
+        
+        # Check for asteroid collisions with ship
+        for roid in asteroids[:]:
+            if roid.rect.colliderect(ship_rect):
+                health -= 1
+                asteroids.remove(roid)
+        
+        # Update and draw lasers
         for laser in lasers[:]:
             laser.update()
             rad = math.radians(laser.angle)
             end_x = laser.x + math.cos(rad) * laser.length
             end_y = laser.y - math.sin(rad) * laser.length
-
+            
+            # Check for laser hits on asteroids
             for roid in asteroids[:]:
-                if roid.rect.colliderect(ship_rect):
-                    health -= 1
-                    asteroids.remove(roid)
-                    continue
                 if roid.rect.clipline((laser.x, laser.y), (end_x, end_y)):
                     if laser in lasers:
                         lasers.remove(laser)
                     if roid in asteroids:
                         asteroids.remove(roid)
-                        hit_asteroids += 1
+                    hit_asteroids += 1
                     break
-
+            
+            # Remove lasers that are off screen
             if laser.x < 0 or laser.x > width or laser.y < 0 or laser.y > height:
                 if laser in lasers:
                     lasers.remove(laser)
             else:
                 laser.draw(surface)
-
+        
         # Update and draw asteroids
         for roid in asteroids[:]:
             roid.update()
@@ -207,30 +211,25 @@ def playing(surface):
                 asteroids.remove(roid)
             else:
                 roid.draw(surface)
-
-        # Update spawn timer
-        spawn_timer += 1  # Increment spawn timer by 1 frame each loop
         
-        # Only spawn an asteroid if the timer has reached the spawn interval
+        # Spawn new asteroids
+        spawn_timer += 1
         if spawn_timer >= spawn_interval:
-            spawn_timer = 0  # Reset the spawn timer
-
+            spawn_timer = 0
             rand_choice = random.random()
             if rand_choice < 0.1:
-                asteroids.append(Asteroid(1, .75, random.randint(90, 180)))  # Small asteroid
+                asteroids.append(Asteroid(1, .75, random.randint(90, 180)))
             elif rand_choice < 0.15:
-                asteroids.append(Asteroid(2, .75, random.randint(90, 180)))  # Medium asteroid
+                asteroids.append(Asteroid(2, .75, random.randint(90, 180)))
             elif rand_choice < 0.18:
-                asteroids.append(Asteroid(3, .75, random.randint(90, 180)))  # Large asteroid
-
+                asteroids.append(Asteroid(3, .75, random.randint(90, 180)))
+        
         # Update the display
         screen_display.update()
-        clock.tick(60)  # Limit the frame rate to 60 FPS
-
+        clock.tick(60)
+    
     pygame.quit()
     print('Score:', hit_asteroids)
     accuracy = hit_asteroids / laser_count if laser_count > 0 else 0
     print(f'Accuracy: {accuracy:.2%}')
     update_scoreboard(hit_asteroids)
-
-    
