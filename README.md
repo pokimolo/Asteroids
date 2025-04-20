@@ -15,12 +15,11 @@ Major Actions/Functions:
 Spinning spaceship - Arrow keys(left and right) spin the ship clockwise and counterclockwise, or the user can use the mouse position for the direction
 Shooting - Pressing spacebar to send a laser
 
-Shooting multiple times for bigger asteroids to break
-  Keeping score of:
-  Asteroids hit
-  Accuracy
-  High score
-  Name with file I/O
+Keeping score of:
+  - Asteroids hit
+  - Accuracy
+  - High score
+  - Name with file I/O
 
 
  
