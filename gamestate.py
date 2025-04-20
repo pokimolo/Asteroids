@@ -155,7 +155,7 @@ def playing(surface, difficulty):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 window = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN or (event.type ==  pygame.KEYDOWN and event.key == pygame.K_SPACE):
                 lasers.append(Laser(angle))
                 laser_count += 1
         

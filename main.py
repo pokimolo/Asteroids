@@ -20,7 +20,7 @@ font2 = pygame.font.SysFont('Arial', 32)
 
 ######################## Choose Difficulty ########################
 
-difficulty = int(input('Enter Difficulty:\n 1 Easy \n 1 Normal \n 3 Hard \n'))
+difficulty = int(input('Enter Difficulty:\n 1 Easy \n 2 Normal \n 3 Hard \n'))
 
 ############################# GAME START ####################################
 
