@@ -20,7 +20,7 @@ font2 = pygame.font.SysFont('Arial', 32)
 
 ######################## Choose Difficulty ########################
 
-difficulty = int(input('Enter Difficulty:\n 1 Easy \n 2 Normal \n 3 Hard \n'))
+#difficulty = int(input('Enter Difficulty:\n 1 Easy \n 2 Normal \n 3 Hard \n'))
 
 ############################# GAME START ####################################
 
@@ -39,7 +39,6 @@ while title_screen:
     surface.fill(white)
     text = font.render('ASTEROIDS', True, black)
     text2 = font2.render('click to play', True, black)
-	
     textRect = text.get_rect()
     textRect2 = text2.get_rect()
     
@@ -50,7 +49,7 @@ while title_screen:
     surface.blit(text2, textRect2)
     pygame.display.update()
 
-
+difficulty = gamestate.select_difficulty()
 gamestate.playing(surface, difficulty)
 pygame.quit() 
 

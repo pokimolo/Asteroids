@@ -130,6 +130,48 @@ class Asteroid:
         # Uncomment for debugging
         # pygame.draw.rect(surface, (255, 0, 0), self.rect, 1)
 
+def select_difficulty():
+    pygame.init()
+    surface = pygame.display.set_mode((width, height))
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+
+    font = pygame.font.SysFont('Arial', 32)
+
+    while True:
+        surface.fill(white)
+        text = font.render('Select Mode', True, black)
+        textRect = text.get_rect(center=(width / 2, height / 3))
+        surface.blit(text, textRect)
+
+        mouse = pygame.mouse.get_pos()
+
+        # Define buttons
+        easybutton = pygame.Rect(width/3 - 110, height/2, 100, 50)
+        medbutton = pygame.Rect(width/2 - 50, height/2, 100, 50)
+        hardbutton = pygame.Rect(2*width/3 + 10, height/2, 100, 50)
+
+        # Draw buttons
+        pygame.draw.rect(surface, (0, 200, 0), easybutton)
+        pygame.draw.rect(surface, (200, 200, 0), medbutton)
+        pygame.draw.rect(surface, (200, 0, 0), hardbutton)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if easybutton.collidepoint(mouse):
+                    return 1
+                elif medbutton.collidepoint(mouse):
+                    return 2
+                elif hardbutton.collidepoint(mouse):
+                    return 3
+
+        pygame.display.update()
+
+
+
 def playing(surface, difficulty):
     pygame.init()
     window = True
@@ -147,7 +189,7 @@ def playing(surface, difficulty):
     elif difficulty == 2:
         spawn_interval = 20
         speed = 1.2
-    else:
+    elif difficulty == 3:
         spawn_interval = 10
     
     while window and health > 0:
@@ -233,6 +275,13 @@ def playing(surface, difficulty):
                 asteroids.append(Asteroid(3, speed, random.randint(90, 180)))
         
         # Update the display
+        font = pygame.font.Font('Platinum Sign.ttf', 20)
+        message = str('SCORE:' + str(hit_asteroids))
+        text = font.render(message, True, white)
+        textRect = text.get_rect()
+        textRect.center = (120, height - 40)
+        surface.blit(text, textRect)
+
         screen_display.update()
         clock.tick(60)
     
