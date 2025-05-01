@@ -34,11 +34,11 @@ while title_screen:
             exit()
 
         # Press any key or mouse click to start the game
-        if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             title_screen = False
     surface.fill(white)
     text = font.render('ASTEROIDS', True, black)
-    text2 = font2.render('press any key to play', True, black)
+    text2 = font2.render('click to play', True, black)
 	
     textRect = text.get_rect()
     textRect2 = text2.get_rect()
