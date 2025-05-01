@@ -12,15 +12,14 @@ The player selects a difficulty: Easy, Regular, or Hard. The player then control
 hit. After being hit 3 times(represented on screen as lives), the game ends and displays info about the game such as asteroids destroyed and accuracy.
 
 Major Actions/Functions:
-Spinning spaceship - Arrow keys(left and right) spin the ship clockwise and counterclockwise, or the user can use the mouse position for the direction
-Shooting - Pressing spacebar to send a laser
+Spinning spaceship - Mouse position for the direction of the spaceship
+Shooting - Pressing spacebar to send a laser, or click mouse button
 
-Shooting multiple times for bigger asteroids to break
-  Keeping score of:
-  Asteroids hit
-  Accuracy
-  High score
-  Name with file I/O
+Keeping score of:
+  - Asteroids hit
+  - Accuracy
+  - High score
+  - Name with file I/O
 
 
  
