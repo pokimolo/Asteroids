@@ -1,6 +1,5 @@
 import pygame
 import math
-import time
 import random
 
 width = 800
@@ -25,8 +24,7 @@ heart = pygame.image.load('pictures/heart.png').convert_alpha()
 bg = pygame.image.load('pictures/Bg.jpg')
 bg = pygame.transform.scale(bg, (width, height))
 
-################################## SCOREBOARD ###################################
-    
+################################## SCOREBOARD ###################################   
 def update_scoreboard(hit_asteroids):
     with open('scoreboard.txt', 'r') as file:
         lines = file.readlines()
@@ -47,13 +45,48 @@ def update_scoreboard(hit_asteroids):
             file.writelines(lines)
    
 def print_board():
-    print('##########TOP SCORES##########')
-    with open('scoreboard.txt', 'r') as file:
-        lines = file.readlines()
-    for line in lines:
-        print(line)
-    print('##############################')
+    pygame.font.init()
+    font = pygame.font.Font('Platinum Sign.ttf', 32)
+    font2 = pygame.font.SysFont('Calibri', 30)
+    
+    pygame.init() 
+    leaderboard = True
+    while leaderboard:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button.collidepoint(mouse):
+                    difficulty = select_difficulty()
+                    playing(surface, difficulty)
+        surface.fill(white)
+        text = font.render('TOP SCORES', True, black)
+        textRect = text.get_rect()
+        textRect.center = (width / 2, height / 4)
+        surface.blit(text, textRect)
 
+        mouse = pygame.mouse.get_pos()
+        button = pygame.Rect(width/2 - 100, height-150, 200, 50)
+        pygame.draw.rect(surface, (0, 0, 200), button)
+
+        text2 = font2.render('PLAY AGAIN', True, white)
+        textRect2 = text2.get_rect()
+        textRect2.center = button.center
+        surface.blit(text2, textRect2)
+
+        spacer = 0
+        with open('scoreboard.txt', 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                linetext = font2.render(line.strip(), True, black)
+                linetextRect = linetext.get_rect()
+                linetextRect.center = (width / 2, height / 2.75 + spacer)
+                surface.blit(linetext, linetextRect)
+                spacer += 45
+        pygame.display.update()
+
+################################## OBJECTS ###################################   
 class Laser:
     def __init__(self, angle):
         self.x = width / 2
@@ -75,7 +108,6 @@ class Laser:
         end_x = self.x + math.cos(rad) * self.length
         end_y = self.y - math.sin(rad) * self.length
         pygame.draw.line(surface, red, (self.x, self.y), (end_x, end_y), 4)
-
 
 class Asteroid:
     def __init__(self, size, speed, angle):
@@ -130,6 +162,7 @@ class Asteroid:
         # Uncomment for debugging
         # pygame.draw.rect(surface, (255, 0, 0), self.rect, 1)
 
+################################## GAME ###################################   
 def select_difficulty():
     pygame.init()
     surface = pygame.display.set_mode((width, height))
@@ -169,7 +202,6 @@ def select_difficulty():
                     return 3
 
         pygame.display.update()
-
 
 
 def playing(surface, difficulty):
@@ -276,16 +308,16 @@ def playing(surface, difficulty):
         
         # Update the display
         font = pygame.font.Font('Platinum Sign.ttf', 20)
-        message = str('SCORE:' + str(hit_asteroids))
-        text = font.render(message, True, white)
+        message = str('SCORE: ' + str(hit_asteroids))
+        text = font.render(message.strip(), True, white)
         textRect = text.get_rect()
-        textRect.center = (120, height - 40)
+        textRect.center = (140, height - 40)
         surface.blit(text, textRect)
 
         screen_display.update()
         clock.tick(60)
     
-    pygame.quit()
+    #pygame.quit()
     accuracy = hit_asteroids / laser_count if laser_count > 0 else 0
     
     print('########### STATS ###########')

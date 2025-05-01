@@ -1,7 +1,6 @@
 # import pygame module 
 import pygame 
 import gamestate
-import math
 
 width = 800
 height = 600
@@ -14,13 +13,10 @@ black = (0, 0, 0)
 screen_display = pygame.display 
 screen_display.set_caption('Asteroids') 
 surface = screen_display.set_mode(z) 
+
 pygame.font.init()
 font = pygame.font.Font('Platinum Sign.ttf', 32)
 font2 = pygame.font.SysFont('Arial', 32)
-
-######################## Choose Difficulty ########################
-
-#difficulty = int(input('Enter Difficulty:\n 1 Easy \n 2 Normal \n 3 Hard \n'))
 
 ############################# GAME START ####################################
 
@@ -51,6 +47,5 @@ while title_screen:
 
 difficulty = gamestate.select_difficulty()
 gamestate.playing(surface, difficulty)
-pygame.quit() 
-
 gamestate.print_board()
+pygame.quit() 
